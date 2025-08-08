@@ -1,10 +1,12 @@
 import express from "express";
-const router = express.Router();
-const { authenticateToken } = require("../middleware/jwtCookie");
-const {addUser, getAllUsers, getSingleUser} = require('../controller/user');
+import upload from "../middleware/multer";
+import { authenticateToken } from "../middleware/jwtCookie";
+import { addUser, getAllUsers, getSingleUser } from "../controller/user";
 
-router.post("/user",  addUser);
-router.get("/user",authenticateToken,  getAllUsers);
+const router = express.Router();
+
+router.post("/user", authenticateToken, upload.any(), addUser);
+router.get("/user", authenticateToken, getAllUsers);
 router.get("/user/:userId", authenticateToken, getSingleUser);
 
-module.exports = router;
+export default router;

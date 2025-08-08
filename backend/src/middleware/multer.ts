@@ -1,15 +1,14 @@
 import { Request } from "express";
 import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "./cloudinary";
 
-// const storage = multer.diskStorage({});
-const storage = multer.diskStorage({
-    // destination: (req, file, cb) => {
-    //     cb(null, 'uploads/');
-    // },
-    // filename: (req, file, cb) => {
-    //     console.log(file, 'fileeee');
-    //     cb(null, Date.now() + '-' + file.originalname);
-    // }
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "user-profiles", // Cloudinary folder
+        allowed_formats: ["jpg", "png", "jpeg", "webp"],
+    } as any,
 });
 
 
@@ -19,12 +18,11 @@ const fileFilter = (
     cb: multer.FileFilterCallback
 ) => {
     if (!file.mimetype.startsWith("image")) {
-        return cb(<any>new Error("Only image files are allowed"), false);
-    } else {
-        cb(null, true);
+        return cb(new Error("Only image files are allowed") as any, false);
     }
+    cb(null, true);
 };
 
-const upload = multer({ storage: storage, fileFilter });
+const upload = multer({ storage, fileFilter });
 
-module.exports = upload;
+export default upload;

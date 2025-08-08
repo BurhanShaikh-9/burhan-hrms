@@ -8,10 +8,14 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+import userRoutes from './routes/user';
+const signinRoutes = require('./routes/signin');
 
 const routeModules = [
-  require('./routes/user'),
-  require('./routes/signin'),
+  userRoutes,
+  signinRoutes,
 ];
 
 app.get('/', (req: Request, res: Response) => {

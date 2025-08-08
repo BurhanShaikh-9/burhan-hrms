@@ -9,7 +9,7 @@ if (!JWT_SECRET) {
 
 // Generate Access Token
 const generateAccessToken = (user: { _id: string }) => {
-    return jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    return jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "3h" });
 };
 
 // Generate Refresh Token
